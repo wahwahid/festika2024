@@ -1,6 +1,9 @@
 const express = require('express')
+const mainRuteRoute = require('./mainrute')
 
 const router = express.Router()
+
+router.use('/mainrute', mainRuteRoute)
 
 router.get('/', (req, res) => {
     res.send('Sugeng rawuh!')
