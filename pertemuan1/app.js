@@ -5,6 +5,7 @@ const indexRouter = require('./routes/index')
 dotenv.config()
 
 const app = express()
+app.use(express.urlencoded({ extended: true }))
 app.use(indexRouter)
 
 const port = process.env.PORT
