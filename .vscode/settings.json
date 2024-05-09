@@ -1,0 +1,6 @@
+{
+    "eslint.ignoreUntitled": true,
+    "eslint.workingDirectories": [
+        "pertemuan1"
+    ],
+}
