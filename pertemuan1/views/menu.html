@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="x-ua-compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Festika 2024 - Menu Resto</title>
+
+  <link rel="stylesheet" href="https://taniarascia.github.io/primitive/css/main.css">
+  <link rel="icon" href="images/favicon.png">
+</head>
+
+<body>
+  <div class="medium-container">
+    <div class="flex-row">
+      <div class="flex-large">
+        <h1>Festika 2024 - Menu Resto</h1>
+      </div>
+    </div>
+    <div class="flex-row">
+      <div class="flex-large">
+        <h2>Daftar Menu</h2>
+        {{#if menuList.length}}
+            <ol>
+                {{#each menuList}}
+                    <li>
+                        <b>{{ name }}</b> &nbsp; Rp. {{ price }}
+                    </li>
+                {{/each}}
+            </ol>
+        {{else}}
+            <b>Tidak ada data</b>
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

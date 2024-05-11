@@ -106,6 +106,9 @@ class MenuController {
         }
         res.sendStatus(202)
     }
+    render = (req, res) => {
+        res.render('menu', { "menuList": this.menuList })
+    }
 }
 
 exports.MenuController = MenuController
