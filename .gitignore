@@ -4,5 +4,7 @@
 !*/storage/auto/csv/.gitkeep
 */storage/manual/*
 !*/storage/manual/.gitkeep
+*/storage/public/*
+!*/storage/public/.gitkeep
 */log/*
 !*/log/.gitkeep

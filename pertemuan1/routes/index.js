@@ -12,6 +12,7 @@ router.use('/ngestatus', ngestatusRoute)
 router.use('/ngebody', ngebodyRoute)
 router.use('/ngefile', ngefileRoute)
 router.use('/menu', menuRoute)
+router.use('/public', express.static('storage/public'))
 
 router.get('/', (req, res) => {
     res.send('Sugeng rawuh!')
