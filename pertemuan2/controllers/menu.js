@@ -36,10 +36,6 @@ class MenuController {
         res.sendStatus(201)
     }
     getByID = (req, res) => {
-        if (req.params.id == "") {
-            res.sendStatus(400)
-            return
-        }
         const id = Number(req.params.id)
         const menu = this.menuList.find((v) => v.id === id)
         if (!menu) {
@@ -65,10 +61,6 @@ class MenuController {
         res.status(200).json(list)
     }
     remove = (req, res) => {
-        if (req.params.id == "") {
-            res.sendStatus(400)
-            return
-        }
         const id = Number(req.params.id)
         const found = this.menuList.find((v) => v.id === id)
         if (!found) {
@@ -79,10 +71,6 @@ class MenuController {
         res.sendStatus(202)
     }
     update = (req, res) => {
-        if (req.params.id == "") {
-            res.sendStatus(400)
-            return
-        }
         const id = Number(req.params.id)
         let updated = false
         this.menuList = this.menuList.map((v) => {
