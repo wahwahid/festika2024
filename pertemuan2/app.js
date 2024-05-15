@@ -2,6 +2,7 @@ const express = require('express')
 const hbs = require('express-hbs')
 const dotenv = require('dotenv')
 const path = require('path')
+const mw = require('./middlewares/index')
 const indexRouter = require('./routes/index')
 const serviceLog = require('./service/log')
 
@@ -26,6 +27,8 @@ app.engine('html', hbs.express4({
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(indexRouter)
+app.use(mw.error.notFoundError)
+app.use(mw.error.unhandledError)
 
 const port = process.env.PORT
 app.listen(port, () => {
