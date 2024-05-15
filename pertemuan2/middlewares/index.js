@@ -1,3 +1,3 @@
-const { MenuValidator } = require('./menu')
+const { ValidationMiddleware } = require('./validation')
 
-exports.MenuValidator = MenuValidator
+exports.Validation = ValidationMiddleware

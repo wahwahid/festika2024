@@ -1,3 +1,5 @@
+const validate = require('express-validator')
+
 class Menu {
     constructor({
         id = 0,
@@ -21,6 +23,21 @@ class Menu {
 class MenuController {
     constructor() {
         this.menuList = []
+        this.withValidID = [
+            validate.param('id').notEmpty().isNumeric()
+        ]
+        this.withValidBody = [
+            validate.body('name').notEmpty().isLength({ max: 255 }),
+            validate.body('description').optional().isLength({ max: 255 }),
+            validate.body('thumbnail').optional().isURL({
+                require_protocol: false,
+                require_host: false,
+                require_tld: false
+            }).isLength({ max: 255 }),
+            validate.body('price').notEmpty().isNumeric(),
+            validate.body('status').optional().isNumeric(),
+            validate.body('category_id').notEmpty().isNumeric(),
+        ]
     }
     add = (req, res) => {
         let payload = new Menu({
