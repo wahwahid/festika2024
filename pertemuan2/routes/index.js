@@ -6,6 +6,7 @@ const ngefileRoute = require('./ngefile')
 const menuRoute = require('./menu')
 const ngemiddleRoute = require('./ngemiddle')
 const ngevalidRoute = require('./ngevalid')
+const ngedbRoute = require('./ngedb')
 
 const router = express.Router()
 
@@ -16,6 +17,7 @@ router.use('/ngefile', ngefileRoute)
 router.use('/menu', menuRoute)
 router.use('/ngemiddle', ngemiddleRoute)
 router.use('/ngevalid', ngevalidRoute)
+router.use('/ngedb', ngedbRoute)
 router.use('/public', express.static('storage/public'))
 
 router.get('/', (req, res) => {
