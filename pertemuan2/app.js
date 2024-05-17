@@ -6,12 +6,18 @@ const path = require('path')
 const mw = require('./middlewares/index')
 const indexRouter = require('./routes/index')
 const { log, SetLog } = require('./service/log')
+const database = require('./service/database')
 
 dotenv.config()
 SetLog({
-    env: process.env.NODE_ENV || "",
-    level: process.env.LOG_LEVEL || "",
-    destination: process.env.LOG_DIR || "",
+  env: process.env.NODE_ENV || "",
+  level: process.env.LOG_LEVEL || "",
+  destination: process.env.LOG_DIR || "",
+})
+database.Connect({
+  debug: process.env.DATABASE_DEBUG,
+  client: process.env.DATABASE_DRIVER || 'mysql2',
+  connection: process.env.DATABASE_URL,
 })
 
 const app = express()
@@ -38,5 +44,5 @@ app.use(mw.error.unhandledError)
 
 const port = process.env.PORT
 app.listen(port, () => {
-    log().info(`Aplikasi menika siap wonten ing port: ${port}`)
+  log().info(`Aplikasi menika siap wonten ing port: ${port}`)
 })
