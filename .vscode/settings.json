@@ -2,6 +2,7 @@
     "eslint.ignoreUntitled": true,
     "eslint.workingDirectories": [
         "pertemuan1",
-        "pertemuan2"
+        "pertemuan2",
+        "pertemuan3"
     ],
 }

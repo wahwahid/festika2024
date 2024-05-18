@@ -1,0 +1,59 @@
+Table categories {
+  id integer [primary key]
+  name varchar
+  status tinyint
+  created_at timestamp
+  created_by integer
+  update_at timestamp
+  update_by integer
+}
+
+Table menus {
+  id integer [primary key]
+  name varchar
+  description varchar
+  thumbnail varchar
+  price varchar
+  status tinyint
+  category_id integer
+  created_at timestamp
+  created_by integer
+  update_at timestamp
+  update_by integer
+}
+
+Table discounts_map_menus {
+  discount_id integer
+  menu_id integer
+}
+
+Table discounts {
+  id integer [primary key]
+  name varchar
+  type tinyint
+  amount varchar
+  start_at timestamp
+  end_at timestamp
+  status tinyint
+  created_at timestamp
+  created_by integer
+  update_at timestamp
+  update_by integer
+}
+
+Table users {
+  id integer [primary key]
+  email varchar
+  password varchar
+  fullname varchar
+  status tinyint
+  role varchar
+  created_at timestamp
+  created_by integer
+  update_at timestamp
+  update_by integer
+}
+
+Ref: menus.category_id > categories.id
+Ref: discounts_map_menus.discount_id > discounts.id
+Ref: discounts_map_menus.menu_id > menus.id
