@@ -11,7 +11,7 @@ function unhandledError(err, req, res, next) {
         message: err.message || "Something wrong"
     }
     if (process.env.NODE_ENV !== "production") {
-        body.data  = err.data
+        body.data = err.data
         body.stack = err.stack
     }
     res.status(status).json(body)

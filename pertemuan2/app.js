@@ -1,10 +1,4 @@
-const express = require('express')
-const hbs = require('express-hbs')
 const dotenv = require('dotenv')
-const morgan = require('morgan')
-const path = require('path')
-const mw = require('./middlewares/index')
-const indexRouter = require('./routes/index')
 const { log, SetLog } = require('./service/log')
 const database = require('./service/database')
 
@@ -19,6 +13,13 @@ database.Connect({
   client: process.env.DATABASE_DRIVER || 'mysql2',
   connection: process.env.DATABASE_URL,
 })
+
+const express = require('express')
+const hbs = require('express-hbs')
+const morgan = require('morgan')
+const path = require('path')
+const mw = require('./middlewares/index')
+const indexRouter = require('./routes/index')
 
 const app = express()
 // view engine
