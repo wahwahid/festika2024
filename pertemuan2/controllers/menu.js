@@ -2,7 +2,7 @@ const validate = require('express-validator')
 const { Menu } = require('../models/entity')
 const repositories = require('../repositories')
 
-const menuRepo = new repositories.Menu()
+const menuRepo = new repositories.MenuDB()
 
 class MenuController {
     constructor() {
@@ -22,7 +22,7 @@ class MenuController {
             validate.body('category_id').notEmpty().isNumeric(),
         ]
     }
-    add = (req, res) => {
+    add = async (req, res) => {
         let payload = new Menu({
             name: req.body.name,
             description: req.body.description,
@@ -31,37 +31,37 @@ class MenuController {
             status: req.body.status,
             category_id: req.body.category_id,
         })
-        const inserted = menuRepo.add(payload)
+        const inserted = await menuRepo.add(payload)
         if (inserted.length === 0) {
             res.sendStatus(406)
         }
         res.sendStatus(201)
     }
-    getByID = (req, res) => {
+    getByID = async (req, res) => {
         const id = Number(req.params.id)
-        const menu = menuRepo.getByID(id)
+        const menu = await menuRepo.getByID(id)
         if (!menu) {
             res.sendStatus(404)
         }
         res.status(200).json(menu)
     }
-    getList = (req, res) => {
-        const list = menuRepo.getList({
+    getList = async (req, res) => {
+        const list = await menuRepo.getList({
             name: req.query.name,
             category_id: req.query.category_id
         })
         res.status(200).json(list)
     }
-    remove = (req, res) => {
+    remove = async (req, res) => {
         const id = Number(req.params.id)
-        const removed = menuRepo.remove(id)
+        const removed = await menuRepo.remove(id)
         if (!removed) {
             res.sendStatus(406)
             return
         }
         res.sendStatus(202)
     }
-    update = (req, res) => {
+    update = async (req, res) => {
         const id = Number(req.params.id)
         let payload = new Menu({
             name: req.body.name,
@@ -71,15 +71,15 @@ class MenuController {
             status: req.body.status,
             category_id: req.body.category_id,
         })
-        let updated = menuRepo.update(id, payload)
+        let updated = await menuRepo.update(id, payload)
         if (!updated) {
             res.sendStatus(406)
             return
         }
         res.sendStatus(202)
     }
-    render = (req, res) => {
-        res.render('menu', { "menuList": menuRepo.getList() })
+    render = async (req, res) => {
+        res.render('menu', { "menuList": await menuRepo.getList() })
     }
 }
 
