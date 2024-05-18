@@ -1,11 +1,13 @@
 const validate = require('express-validator')
 const { Menu } = require('../models/entity')
-const repositories = require('../repositories')
-
-const menuRepo = new repositories.MenuDB()
 
 class MenuController {
-    constructor() {
+    /**
+     * 
+     * @param {import('../repositories').MenuDB} menuRepo 
+     */
+    constructor(menuRepo) {
+        this.menuRepo = menuRepo
         this.withValidID = [
             validate.param('id').notEmpty().isNumeric()
         ]
@@ -31,7 +33,7 @@ class MenuController {
             status: req.body.status,
             category_id: req.body.category_id,
         })
-        const inserted = await menuRepo.add(payload)
+        const inserted = await this.menuRepo.add(payload)
         if (inserted.length === 0) {
             res.sendStatus(406)
         }
@@ -39,14 +41,14 @@ class MenuController {
     }
     getByID = async (req, res) => {
         const id = Number(req.params.id)
-        const menu = await menuRepo.getByID(id)
+        const menu = await this.menuRepo.getByID(id)
         if (!menu) {
             res.sendStatus(404)
         }
         res.status(200).json(menu)
     }
     getList = async (req, res) => {
-        const list = await menuRepo.getList({
+        const list = await this.menuRepo.getList({
             name: req.query.name,
             category_id: req.query.category_id
         })
@@ -54,7 +56,7 @@ class MenuController {
     }
     remove = async (req, res) => {
         const id = Number(req.params.id)
-        const removed = await menuRepo.remove(id)
+        const removed = await this.menuRepo.remove(id)
         if (!removed) {
             res.sendStatus(406)
             return
@@ -71,7 +73,7 @@ class MenuController {
             status: req.body.status,
             category_id: req.body.category_id,
         })
-        let updated = await menuRepo.update(id, payload)
+        let updated = await this.menuRepo.update(id, payload)
         if (!updated) {
             res.sendStatus(406)
             return
@@ -79,7 +81,7 @@ class MenuController {
         res.sendStatus(202)
     }
     render = async (req, res) => {
-        res.render('menu', { "menuList": await menuRepo.getList() })
+        res.render('menu', { "menuList": await this.menuRepo.getList() })
     }
 }
 

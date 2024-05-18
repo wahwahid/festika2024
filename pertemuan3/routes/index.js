@@ -8,32 +8,44 @@ const ngemiddleRoute = require('./ngemiddle')
 const ngevalidRoute = require('./ngevalid')
 const ngedbRoute = require('./ngedb')
 
-const router = express.Router()
+/**
+ * 
+ * @param { import("../middlewares/index").Validation } validationMw
+ * @param { import("../controllers/index").Menu } menuCtrl
+ */
+function indexRouter(
+    validationMw,
+    menuCtrl
+) {
+    const router = express.Router()
 
-router.use('/mainrute', mainRuteRoute)
-router.use('/ngestatus', ngestatusRoute)
-router.use('/ngebody', ngebodyRoute)
-router.use('/ngefile', ngefileRoute)
-router.use('/menu', menuRoute)
-router.use('/ngemiddle', ngemiddleRoute)
-router.use('/ngevalid', ngevalidRoute)
-router.use('/ngedb', ngedbRoute)
-router.use('/public', express.static('storage/public'))
+    router.use('/mainrute', mainRuteRoute)
+    router.use('/ngestatus', ngestatusRoute)
+    router.use('/ngebody', ngebodyRoute)
+    router.use('/ngefile', ngefileRoute)
+    router.use('/menu', menuRoute.menuRouter(validationMw, menuCtrl))
+    router.use('/ngemiddle', ngemiddleRoute)
+    router.use('/ngevalid', ngevalidRoute)
+    router.use('/ngedb', ngedbRoute)
+    router.use('/public', express.static('storage/public'))
 
-router.get('/', (req, res) => {
-    res.send('Sugeng rawuh!')
-})
+    router.get('/', (req, res) => {
+        res.send('Sugeng rawuh!')
+    })
 
-router.post('/', (req, res) => {
-    res.send('Niki POST')
-})
+    router.post('/', (req, res) => {
+        res.send('Niki POST')
+    })
 
-router.put('/', (req, res) => {
-    res.send('Niki PUT')
-})
+    router.put('/', (req, res) => {
+        res.send('Niki PUT')
+    })
 
-router.delete('/', (req, res) => {
-    res.send('Niki delete')
-})
+    router.delete('/', (req, res) => {
+        res.send('Niki delete')
+    })
 
-module.exports = router
+    return router
+}
+
+exports.indexRouter = indexRouter

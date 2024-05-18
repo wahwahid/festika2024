@@ -1,6 +1,15 @@
 const dotenv = require('dotenv')
+const express = require('express')
+const hbs = require('express-hbs')
+const morgan = require('morgan')
+const path = require('path')
+
 const { log, SetLog } = require('./service/log')
 const database = require('./service/database')
+const repo = require('./repositories')
+const mw = require('./middlewares')
+const ctrl = require('./controllers')
+const routes = require('./routes')
 
 dotenv.config()
 SetLog({
@@ -8,20 +17,22 @@ SetLog({
   level: process.env.LOG_LEVEL || "",
   destination: process.env.LOG_DIR || "",
 })
-database.Connect({
+const dbConn = database.Connect({
   debug: process.env.DATABASE_DEBUG,
   client: process.env.DATABASE_DRIVER || 'mysql2',
   connection: process.env.DATABASE_URL,
 })
 
-const express = require('express')
-const hbs = require('express-hbs')
-const morgan = require('morgan')
-const path = require('path')
-const mw = require('./middlewares/index')
-const indexRouter = require('./routes/index')
-
 const app = express()
+
+const menuDBRepo = new repo.MenuDB(dbConn)
+
+const validationMw = new mw.Validation()
+
+const menuCtrl = new ctrl.Menu(menuDBRepo)
+
+const indexRoutes = routes.indexRouter(validationMw, menuCtrl)
+
 // view engine
 app.set('views', path.join(process.cwd(), 'views'))
 app.set('view engine', 'html')
@@ -39,7 +50,7 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length]', 
 }))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
-app.use(indexRouter)
+app.use(indexRoutes)
 app.use(mw.error.notFoundError)
 app.use(mw.error.unhandledError)
 

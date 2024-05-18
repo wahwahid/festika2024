@@ -1,12 +1,11 @@
-const { conn } = require('../service/database')
 const { log } = require('../service/log')
 
 class MenuDBRepository {
-    constructor() {
-        /**
-        * @type { import("knex").Knex } knex
-        */
-        this.db = conn()
+    /**
+    * @param { import("knex").Knex } db
+    */
+    constructor(db) {
+        this.db = db
         this.table = 'menus'
     }
     /**
