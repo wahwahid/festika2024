@@ -36,6 +36,7 @@ class MenuController {
         const inserted = await this.menuRepo.add(payload)
         if (inserted.length === 0) {
             res.sendStatus(406)
+            return
         }
         res.sendStatus(201)
     }
