@@ -3,6 +3,7 @@ const express = require('express')
 const hbs = require('express-hbs')
 const morgan = require('morgan')
 const path = require('path')
+const helmet = require('helmet')
 
 const { log, SetLog } = require('./service/log')
 const database = require('./service/database')
@@ -48,6 +49,7 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length]', 
     write: (message) => log().http(message.trim()),
   },
 }))
+app.use(helmet())
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(indexRoutes)

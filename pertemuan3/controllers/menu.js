@@ -13,7 +13,7 @@ class MenuController {
         ]
         this.withValidBody = [
             validate.body('name').notEmpty().isLength({ max: 255 }),
-            validate.body('description').optional().isLength({ max: 255 }),
+            validate.body('description').optional().isLength({ max: 255 }).escape(),
             validate.body('thumbnail').optional().isURL({
                 require_protocol: false,
                 require_host: false,
