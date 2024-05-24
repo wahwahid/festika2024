@@ -4,6 +4,7 @@ const hbs = require('express-hbs')
 const morgan = require('morgan')
 const path = require('path')
 const helmet = require('helmet')
+const cors = require('cors')
 
 const { log, SetLog } = require('./service/log')
 const database = require('./service/database')
@@ -50,6 +51,9 @@ app.use(morgan(':method :url :status :response-time ms - :res[content-length]', 
   },
 }))
 app.use(helmet())
+app.use(cors({
+  origin: 'https://festika2024.wahwahid.com'
+}))
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(indexRoutes)
