@@ -12,6 +12,7 @@ const repo = require('./repositories')
 const mw = require('./middlewares')
 const ctrl = require('./controllers')
 const routes = require('./routes')
+const { authRouter } = require('./routes/auth')
 
 dotenv.config()
 SetLog({
@@ -57,6 +58,7 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(indexRoutes)
+app.use('/auth', authRouter(validationMw, process.env.JWT_SECRET, dbConn))
 app.use(mw.error.notFoundError)
 app.use(mw.error.unhandledError)
 
