@@ -14,8 +14,9 @@ const withValidCred = [
  * @param { import("../middlewares/index").Validation } validationMw
  * @param { string } jwtSecret
  * @param { import("knex").Knex } db
+ * @param { import("../middlewares/index").Auth } authMw
  */
-function authRouter(validationMw, jwtSecret, db) {
+function authRouter(validationMw, jwtSecret, db, authMw) {
     const router = express.Router()
 
     router.post('/login', withValidCred, validationMw.validateRequest, capture(async (req, res) => {
@@ -36,6 +37,10 @@ function authRouter(validationMw, jwtSecret, db) {
             role: user.role,
         }, jwtSecret, { expiresIn: '2m' })
         res.json({ token })
+    }))
+
+    router.get('/profile', authMw.loadJWT, authMw.isLoggedIn, capture((req, res) => {
+        res.json({ profile: req.auth })
     }))
 
     return router

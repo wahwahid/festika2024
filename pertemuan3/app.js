@@ -31,6 +31,7 @@ const app = express()
 const menuDBRepo = new repo.MenuDB(dbConn)
 
 const validationMw = new mw.Validation()
+const authMw = new mw.Auth(process.env.JWT_SECRET)
 
 const menuCtrl = new ctrl.Menu(menuDBRepo)
 
@@ -58,7 +59,7 @@ app.use(cors({
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())
 app.use(indexRoutes)
-app.use('/auth', authRouter(validationMw, process.env.JWT_SECRET, dbConn))
+app.use('/auth', authRouter(validationMw, process.env.JWT_SECRET, dbConn, authMw))
 app.use(mw.error.notFoundError)
 app.use(mw.error.unhandledError)
 
