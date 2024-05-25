@@ -4,6 +4,8 @@ const { log } = require('../service/log')
 class AuthMiddleware {
     constructor(jwtSecret) {
         this.jwtSecret = jwtSecret
+        this.ROLE_ADMIN = 'admin'
+        this.ROLE_USER = 'user'
     }
     loadJWT = (req, res, next) => {
         const bearerToken = req.header('Authorization')
@@ -29,6 +31,13 @@ class AuthMiddleware {
     isLoggedIn = (req, res, next) => {
         if (!req.auth) {
             res.sendStatus(401)
+            return
+        }
+        next()
+    }
+    isRole = (...roles) => (req, res, next) => {
+        if (!req.auth.role || !roles.includes(req.auth.role)) {
+            res.sendStatus(403)
             return
         }
         next()

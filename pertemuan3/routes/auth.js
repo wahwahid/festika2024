@@ -35,11 +35,23 @@ function authRouter(validationMw, jwtSecret, db, authMw) {
             email: user.email,
             fullname: user.fullname,
             role: user.role,
-        }, jwtSecret, { expiresIn: '2m' })
+        }, jwtSecret, { expiresIn: '5m' })
         res.json({ token })
     }))
 
     router.get('/profile', authMw.loadJWT, authMw.isLoggedIn, capture((req, res) => {
+        res.json({ profile: req.auth })
+    }))
+
+    router.get('/harus-admin', authMw.loadJWT, authMw.isLoggedIn, authMw.isRole(authMw.ROLE_ADMIN), capture((req, res) => {
+        res.json({ profile: req.auth })
+    }))
+
+    router.get('/harus-user', authMw.loadJWT, authMw.isLoggedIn, authMw.isRole(authMw.ROLE_USER), capture((req, res) => {
+        res.json({ profile: req.auth })
+    }))
+
+    router.get('/admin-atau-user', authMw.loadJWT, authMw.isLoggedIn, authMw.isRole(authMw.ROLE_ADMIN, authMw.ROLE_USER), capture((req, res) => {
         res.json({ profile: req.auth })
     }))
 
