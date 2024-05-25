@@ -11,10 +11,12 @@ const ngedbRoute = require('./ngedb')
 /**
  * 
  * @param { import("../middlewares/index").Validation } validationMw
+ * @param { import("../middlewares/index").Auth } authMw
  * @param { import("../controllers/index").Menu } menuCtrl
  */
 function indexRouter(
     validationMw,
+    authMw,
     menuCtrl
 ) {
     const router = express.Router()
@@ -23,7 +25,7 @@ function indexRouter(
     router.use('/ngestatus', ngestatusRoute)
     router.use('/ngebody', ngebodyRoute)
     router.use('/ngefile', ngefileRoute)
-    router.use('/menu', menuRoute.menuRouter(validationMw, menuCtrl))
+    router.use('/menu', menuRoute.menuRouter(validationMw, authMw, menuCtrl))
     router.use('/ngemiddle', ngemiddleRoute)
     router.use('/ngevalid', ngevalidRoute)
     router.use('/ngedb', ngedbRoute)

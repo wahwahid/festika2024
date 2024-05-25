@@ -35,7 +35,7 @@ const authMw = new mw.Auth(process.env.JWT_SECRET)
 
 const menuCtrl = new ctrl.Menu(menuDBRepo)
 
-const indexRoutes = routes.indexRouter(validationMw, menuCtrl)
+const indexRoutes = routes.indexRouter(validationMw, authMw, menuCtrl)
 
 // view engine
 app.set('views', path.join(process.cwd(), 'views'))

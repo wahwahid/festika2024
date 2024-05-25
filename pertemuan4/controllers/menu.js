@@ -82,7 +82,10 @@ class MenuController {
         res.sendStatus(202)
     }
     render = async (req, res) => {
-        res.render('menu', { "menuList": await this.menuRepo.getList() })
+        res.render('menu', {
+            "menuList": await this.menuRepo.getList(),
+            "auth": req.auth
+        })
     }
 }
 
