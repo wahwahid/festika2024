@@ -3,6 +3,7 @@
     "eslint.workingDirectories": [
         "pertemuan1",
         "pertemuan2",
-        "pertemuan3"
+        "pertemuan3",
+        "pertemuan4"
     ],
 }
