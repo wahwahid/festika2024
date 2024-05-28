@@ -8,8 +8,8 @@ class Menu {
         price = '',
         status = 0,
         category_id = 0,
-        create_at,
-        create_by,
+        created_at,
+        created_by,
         update_at,
         update_by,
     }) {
@@ -22,9 +22,9 @@ class Menu {
         this.price = price
         this.status = Number(status)
         this.category_id = Number(category_id)
-        this.create_at = create_at
-        if (create_by) {
-            this.create_by = Number(create_by)
+        this.created_at = created_at
+        if (created_by) {
+            this.created_by = Number(created_by)
         }
         this.update_at = update_at
         if (update_by) {
