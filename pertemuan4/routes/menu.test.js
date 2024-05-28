@@ -6,6 +6,11 @@ describe('menuRouter', () => {
         const validationMw = {
             validateRequest: jest.fn()
         }
+        const authMw = {
+            loadJWT: jest.fn(),
+            isLoggedIn: jest.fn(),
+            isRole: jest.fn().mockImplementation(() => jest.fn()),
+        }
         const menuCtrl = {
             withValidID: jest.fn(),
             withValidBody: jest.fn(),
@@ -17,7 +22,7 @@ describe('menuRouter', () => {
             render: jest.fn(),
         }
 
-        const router = menuRouter(validationMw, menuCtrl)
-        expect(router.stack.length).toBe(6)
+        const router = menuRouter(validationMw, authMw, menuCtrl)
+        expect(router.stack.length).toBe(7)
     })
 })
