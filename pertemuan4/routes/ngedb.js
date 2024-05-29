@@ -1,5 +1,7 @@
 const express = require('express')
 const { conn } = require('../service/database')
+const { jsonResponse, asyncHandler } = require('../helpers/express')
+const { log } = require('../service/log')
 const router = express.Router()
 
 router.get('/table/:table', (req, res) => {
@@ -38,8 +40,8 @@ router.get('/menu-with-disc', (req, res) => {
         })
 })
 
-router.get('/menu-with-disc-cat', (req, res) => {
-    conn().raw(`
+router.get('/menu-with-disc-cat', asyncHandler(async (req, res) => {
+    return conn().raw(`
     SELECT 
         m.id, m.name, m.description, m.thumbnail, m.price, m.status, m.category_id
         , c.name as category_name
@@ -63,10 +65,38 @@ router.get('/menu-with-disc-cat', (req, res) => {
         category_id: req.query.category_id || 0,
     })
         .then(([data]) => {
-            res.send(data)
-        }, (err) => {
-            res.send(err)
+            return data
+        }).catch((err) => {
+            log().error('repo: err query get list with disc and cat', err)
+            throw new Error('database error')
+        }).then((menus) => {
+            return menus.map((v) => {
+                if (v.disc_type == null && req.auth) {
+                    v.disc_type = 0
+                    v.disc_amount = 500
+                    v.disc_name = 'Diskon member 500'
+                }
+                switch (v.disc_type) {
+                    case 1:
+                        v.price_final = String(v.price - (v.disc_amount / 100 * v.price))
+                        break;
+                    case 0:
+                        v.price_final = String(v.price - v.disc_amount)
+                        break;
+                    default:
+                        v.price_final = String(v.price)
+                        break;
+                }
+                return v
+            })
+        }).catch((err) => {
+            log().error('usecase: err get list with disc and cat', err)
+            throw new Error('problem when get menu list data')
+        }).then((list) => {
+            jsonResponse(res, { list })
+        }).catch((err) => {
+            jsonResponse(res, { list: [] }, 500, err.message)
         })
-})
+}))
 
 module.exports = router
