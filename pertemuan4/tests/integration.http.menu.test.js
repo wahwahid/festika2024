@@ -99,7 +99,7 @@ describe('IntegrationTest /menu', () => {
 
             expect(response.status).toEqual(400)
         })
-        it('GET /menu/:id fail insert db', async () => {
+        it('GET /menu/:id fail db', async () => {
             const menuRepo = {
                 getByID: jest.fn().mockResolvedValue()
             }
@@ -111,7 +111,7 @@ describe('IntegrationTest /menu', () => {
 
             expect(response.status).toEqual(404)
         })
-        it('GET /menu/:id success insert', async () => {
+        it('GET /menu/:id success', async () => {
             const menuRepo = {
                 getByID: jest.fn().mockResolvedValue({
                     name: 'Nasi Kuning',
@@ -127,9 +127,15 @@ describe('IntegrationTest /menu', () => {
 
             expect(response.status).toEqual(200)
             expect(response.body).toStrictEqual({
-                name: 'Nasi Kuning',
-                price: 5000,
-                category_id: 1,
+                code: 200,
+                message: 'OK',
+                data: {
+                    menu: {
+                        name: 'Nasi Kuning',
+                        price: 5000,
+                        category_id: 1,
+                    }
+                }
             })
         })
     })
